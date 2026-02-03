@@ -17,6 +17,23 @@ The main objectives of this task are:
 
 ---
 
+## Repository Structure
+
+aws-ec2-terraform-devops/
+├── README.md
+├── docs/
+│ ├── aws.md
+│ └── terraform.md
+├── terraform_ec2/
+│ ├── provider.tf
+│ ├── main.tf
+│ ├── variables.tf
+│ └── outputs.tf
+├── images/
+└── .gitignore
+
+
+
 ## Tools & Technologies Used
 - Amazon Web Services (AWS Free Tier)
 - Amazon EC2
@@ -38,19 +55,51 @@ This repository is organized as follows:
 
 ---
 
-## AWS EC2 – Manual Implementation
-The first part of this task involved launching an EC2 instance manually using the AWS Management Console. This helped in understanding the core components involved in EC2 provisioning, such as AMI selection, instance types, key pairs, security groups, and networking.
+## Manual EC2 Launch Using AWS Console
 
-Screenshots of the manual EC2 launch process are available in the `images/` folder.
+### Steps Followed
+1. Logged into AWS Management Console
+2. Navigated to EC2 Dashboard
+3. Selected Amazon Linux 2 AMI
+4. Chose `t3.micro` instance type (Free Tier eligible)
+5. Created and selected an EC2 Key Pair
+6. Configured security group
+7. Launched the instance
+
+### EC2 Running State
+After launch, the EC2 instance entered the running state.
+---
+
+### EC2 Termination
+After verification, the instance was terminated to avoid unnecessary billing.
+
+## EC2 Provisioning Using Terraform (Infrastructure as Code)
+
+Terraform was used to automate EC2 provisioning. This approach ensures repeatability, consistency, and reduced human error.
+
+### Terraform Files Used
+- `provider.tf` – AWS provider configuration
+- `variables.tf` – Input variables
+- `main.tf` – EC2 resource definition
+- `outputs.tf` – Output values
 
 ---
 
-## EC2 Provisioning Using Terraform
-The second part of the task focused on automating EC2 provisioning using Terraform. The same infrastructure was created using Infrastructure as Code principles, ensuring repeatability and consistency.
+### Terraform Initialization
+Terraform was initialized to download required providers.
 
-Terraform was configured to dynamically fetch the latest Amazon Linux AMI, avoiding region-specific AMI issues.
+### Terraform Apply
+The EC2 instance was created using Terraform with dynamic AMI selection.
 
----
+### Terraform Destroy
+After validation, the infrastructure was destroyed to ensure cost control.
+
+## Key Learnings
+- Manual provisioning helps understand AWS fundamentals
+- Terraform enables automation and repeatability
+- AMI IDs are region-specific and should be dynamically fetched
+- Infrastructure as Code is essential for modern DevOps workflows
+- Resource cleanup is critical when using AWS Free Tier
 
 ## Free Tier & Cost Management
 All resources were created using AWS Free Tier eligible services. After verification, EC2 instances were terminated using `terraform destroy` to avoid unnecessary charges.
